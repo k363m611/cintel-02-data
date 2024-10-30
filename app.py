@@ -58,7 +58,7 @@ with ui.sidebar(open="open"):
         target="_blank"
     )
 
-ui.page_opts(title="Justin's Penguin Data", fillable=True)
+ui.page_opts(title="Katie's Penguin Data", fillable=True)
 with ui.layout_columns():
 
     @render_plotly
