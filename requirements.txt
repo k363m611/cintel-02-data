@@ -1,0 +1,53 @@
+from shinylive import ui, render
+import pandas as pd
+import plotly.express as px
+
+# Load your data into a DataFrame
+df = pd.read_csv('path_to_your_data.csv')  # Update with your data path
+
+# UI Layout
+app_ui = ui.page_fluid(
+    # Add the sidebar
+    ui.sidebar(open=True, 
+               ui.h2("Sidebar"),
+               ui.input_selectize("selected_attribute", "Choose a column", 
+                                  ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]),
+               ui.input_numeric("plotly_bin_count", "Number of Plotly bins"),
+               ui.input_slider("seaborn_bin_count", "Number of Seaborn bins", 
+                               min=1, max=100, value=30),
+               ui.input_checkbox_group("selected_species_list", "Select Species", 
+                                       ["Adelie", "Gentoo", "Chinstrap"], 
+                                       selected=["Adelie"], inline=True),
+               ui.hr(),
+               ui.a("GitHub", href="https://github.com/k363m611/cintel-02-data", target="_blank")),
+    
+    # Main content
+    ui.layout_columns(
+        ui.data_table(df),
+        ui.data_grid(df),
+        ui.layout_columns(
+            ui.plotly_output("plotly_histogram"),
+            ui.plotly_output("seaborn_histogram"),
+            ui.plotly_output("plotly_scatterplot")
+        )
+    )
+)
+
+# Server Logic
+@render.plotly
+def plotly_histogram():
+    # Create a Plotly Histogram
+    return px.histogram(df, x='selected_attribute', nbins=app_ui.input("plotly_bin_count"))
+
+@render.plotly
+def seaborn_histogram():
+    # Create a Seaborn Histogram (use similar method for Seaborn)
+    pass  # Add your seaborn histogram logic
+
+@render.plotly
+def plotly_scatterplot():
+    # Create a Plotly Scatterplot
+    return px.scatter(df, x='bill_length_mm', y='bill_depth_mm', color='species')
+
+# Run the app
+app = ui.App(app_ui, server)
