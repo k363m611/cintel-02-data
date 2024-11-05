@@ -54,7 +54,7 @@ with ui.sidebar(open="open"):
 
     ui.a(
         "GitHub",
-        href= "https://github.com/SchroderJ-pixel/cintel-02-data-SchroderJ-pixel",
+        href= "https://github.com/k363m611/cintel-02-data",
         target="_blank"
     )
 
